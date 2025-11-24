@@ -53,5 +53,8 @@ TagManager:
   - name: High Environment
     uniqueID: 484664063
     locked: 0
+  - name: Room Shroud
+    uniqueID: 3822176285
+    locked: 0
   m_RenderingLayers:
   - Default

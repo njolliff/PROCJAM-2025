@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Rigidbody2D _rb;
+    [SerializeField] private SpriteRenderer _sprite;
+    [SerializeField] private Animator _animator;
 
     // NON-SERIALIZED
     private Vector2 _movementInput;
@@ -24,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         HandleTimers();
+
+        OrientSprite();
     }
     void FixedUpdate()
     {
@@ -110,6 +115,44 @@ public class PlayerMovement : MonoBehaviour
                 canDash = true; // Enable dashing
                 _dashCooldownTimer = 0f; // Reset timer
             }
+        }
+    }
+    #endregion
+
+    #region Helper Methods
+    private void OrientSprite()
+    {
+        // Animator Bools:
+        // isAlive
+        // isMovingUp
+        // isMovingDown
+        // isMovingHorizontal
+
+        // Player is not moving (or barely moving)
+        if (Math.Abs(_rb.linearVelocityX) <= 0.1 && Math.Abs(_rb.linearVelocityY) <= 0.1)
+        {
+            // Set animator bools
+            _animator.SetBool("isMovingUp", false);
+            _animator.SetBool("isMovingDown", false);
+            _animator.SetBool("isMovingHorizontal", false);
+
+            // Unflip sprite if necessary
+            if (_sprite.flipX) 
+                _sprite.flipX = false;
+        }
+        // For now (with only idle and walking side animations) walk if not idle
+        else
+        {
+            // Set animator bools
+            _animator.SetBool("isMovingUp", false);
+            _animator.SetBool("isMovingDown", false);
+            _animator.SetBool("isMovingHorizontal", true);
+
+            // Flip sprite if necessary (faces right by default)
+            if (_rb.linearVelocityX >= 0 && _sprite.flipX) 
+                _sprite.flipX = false;
+            else if (_rb.linearVelocityX < 0 && !_sprite.flipX)
+                _sprite.flipX = true;
         }
     }
     #endregion
