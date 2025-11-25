@@ -3,31 +3,23 @@ using UnityEngine;
 public class Room : MonoBehaviour
 {
     #region Variables
+    [Header("Room Values")]
+    public bool isActiveRoom = false;
+
     [Header("References")]
     public Door[] doors;
     public RoomShroud shroud;
     #endregion
 
-    #region Initialization / Destruction
-    void OnEnable()
-    {
-        // Subscribe to events
-        shroud.onFadeFromBlackFinished += LockDoors;
-    }
-    void OnDisable()
-    {
-        // Unsubscribe from events
-        shroud.onFadeFromBlackFinished -= LockDoors;
-    }
-    #endregion
-
     #region Player Enter/Exit Room
     public void OnPlayerEnteredRoom()
     {
+        isActiveRoom = true;
         shroud.FadeFromBlack();
     }
     public void OnPlayerExitedRoom()
     {
+        isActiveRoom = false;
         shroud.FadeToBlack();
     }
     #endregion

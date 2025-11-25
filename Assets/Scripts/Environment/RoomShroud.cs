@@ -1,13 +1,11 @@
-using System;
 using UnityEngine;
 
 public class RoomShroud : MonoBehaviour
 {
+    [SerializeField] private Room _room;
     [SerializeField] private SpriteRenderer _sprite;
     [SerializeField] private AnimationCurve _fadeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [SerializeField] private float _transitionDuration;
-
-    public Action onFadeFromBlackFinished;
 
     private enum ShroudState { Idle, FadingToBlack, FadingFromBlack}
     private ShroudState _state = ShroudState.Idle;
@@ -33,7 +31,9 @@ public class RoomShroud : MonoBehaviour
 
             // Return to idle if fade is finished
             if (_fadeProgress >= 1)
+            {
                 _state = ShroudState.Idle;
+            }
         }
 
         // If fading FROM black
@@ -47,7 +47,7 @@ public class RoomShroud : MonoBehaviour
             if (_fadeProgress >= 1)
             {
                 _state = ShroudState.Idle;
-                onFadeFromBlackFinished?.Invoke();
+                _room.LockDoors();
             }
         }
     }

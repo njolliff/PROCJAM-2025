@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     // SERIALIZED
     [Header("Movement Values")]
     public bool canMove = true;
-    public float acceleration = 1f, maxVelocity = 3f;
+    public float acceleration = 1f, maxVelocity = 3f, moveBetweenRoomSpeed = 0.5f;
     public bool canDash = true;
     public float dashStrength = 5f, dashDuration = 0.5f, dashCooldown = 2f;
 
@@ -18,9 +18,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator _animator;
 
     // NON-SERIALIZED
+    private Vector2 _newRoomPos;
     private Vector2 _movementInput;
-    private bool _dashRequested = false, _isDashing = false;
+    private bool _dashRequested = false, _isDashing = false, _isMovingBetweenRooms = false;
     private float _dashDurationTimer = 0f, _dashCooldownTimer = 0f;
+    #endregion
+
+    #region Initialization / Destruction
+    void OnEnable()
+    {
+        Door.onLockAnimationFinished += () => canMove = true;
+    }
+    void OnDisable()
+    {
+        Door.onLockAnimationFinished -= () => canMove = true;
+    }
     #endregion
 
     #region Update
@@ -45,6 +57,22 @@ public class PlayerMovement : MonoBehaviour
             else
                 MovePlayer();
         }
+        else if (_isMovingBetweenRooms)
+        {
+            // Update player velocity in the direction of the new room
+            if (Vector2.Distance(_rb.position, _newRoomPos) > 0.05)
+            {
+                Vector2 updatedVelocity = moveBetweenRoomSpeed * (_newRoomPos - _rb.position).normalized;
+                _rb.linearVelocity = updatedVelocity;
+            }
+
+            // Halt velocity when target position reached
+            else
+            {
+                _rb.linearVelocity = Vector2.zero;
+                _isMovingBetweenRooms = false;
+            }
+        }
     }
     #endregion
 
@@ -59,6 +87,11 @@ public class PlayerMovement : MonoBehaviour
 
         // Apply updated velocity
         _rb.linearVelocity = updatedVelocity;
+    }
+    public void MovePlayerTo(Vector2 pos)
+    {
+        _newRoomPos = pos;
+        _isMovingBetweenRooms = true;
     }
     private void Dash()
     {
