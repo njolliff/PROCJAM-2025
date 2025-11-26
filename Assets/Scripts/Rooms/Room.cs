@@ -36,6 +36,28 @@ public class Room : MonoBehaviour
     }
     #endregion
 
+    #region Shroud
+    [ContextMenu("Lift Shroud")]
+    public void LiftShroud()
+    {
+        shroud.FadeFromBlack();
+    }
+    [ContextMenu("Lower Shroud")]
+    public void LowerShroud()
+    {
+        shroud.FadeToBlack();
+    }
+    public void FinishedFadingFromBlack()
+    {
+        // If the room is enemy/boss, lock the doors, movement will be unlocked once locking finishes
+        if (roomType == RoomType.Enemy || roomType == RoomType.Boss)
+            LockDoors();
+        // Otherwise, the doors don't need to lock and movement can be unlocked
+        else
+            PlayerMovement.Instance.canMove = true;
+    }
+    #endregion
+
     #region Doors
     [ContextMenu("Lock Doors")]
     public void LockDoors()

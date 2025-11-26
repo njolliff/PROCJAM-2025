@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1aa731206c5c14fb2159a4dcd77039, type: 3}
   m_Name: Boss Rooms
   m_EditorClassIdentifier: Assembly-CSharp::RoomLayoutContainer
-  roomLayouts: []
+  roomLayouts:
+  - {fileID: 11400000, guid: f830a9b5ddc461f49b1c91b78e749f38, type: 2}

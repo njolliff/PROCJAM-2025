@@ -149,13 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b770a400134496648a11ad0e15e8a36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  player: {fileID: 781048599}
-  roomsContainer: {fileID: 11400000, guid: 80f1138da86b4ba4aaaf9d24d6621b4a, type: 2}
-  grid: {fileID: 397780698}
-  roomCount: 20
-  branchChance: 0.35
-  extraDoorChance: 0.2
-  treasureRoomChance: 0.1
+  roomCount: 0
+  branchChance: 0
+  extraDoorChance: 0
+  treasureRoomChance: 0
   roomSpacing: {x: 22, y: 12}
 --- !u!4 &303896389
 Transform:
@@ -179,7 +176,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303896387}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f992099ae346c34b8ccde7db6441438, type: 3}
   m_Name: 
@@ -366,7 +363,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!156049354 &397780697
 Grid:
   m_ObjectHideFlags: 0
@@ -388,7 +385,7 @@ Transform:
   m_GameObject: {fileID: 397780696}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -884,7 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c42524301f0154a87dd9c6f573a602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  canMove: 0
+  canMove: 1
   acceleration: 20
   maxVelocity: 5
   moveBetweenRoomSpeed: 3
@@ -3488,7 +3485,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1518255550366588182
 GameObject:
   m_ObjectHideFlags: 0

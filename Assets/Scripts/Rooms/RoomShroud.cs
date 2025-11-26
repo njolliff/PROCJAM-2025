@@ -47,7 +47,7 @@ public class RoomShroud : MonoBehaviour
             if (_fadeProgress >= 1)
             {
                 _state = ShroudState.Idle;
-                _room.LockDoors();
+                _room.FinishedFadingFromBlack();
             }
         }
     }

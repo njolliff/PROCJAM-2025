@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator _animator;
 
     // NON-SERIALIZED
+    public static PlayerMovement Instance;
     private Vector2 _newRoomPos;
     private Vector2 _movementInput;
     private bool _dashRequested = false, _isDashing = false, _isMovingBetweenRooms = false;
@@ -25,6 +26,13 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Initialization / Destruction
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
     void OnEnable()
     {
         Door.onLockAnimationFinished += () => canMove = true;
@@ -32,6 +40,11 @@ public class PlayerMovement : MonoBehaviour
     void OnDisable()
     {
         Door.onLockAnimationFinished -= () => canMove = true;
+    }
+    void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
     #endregion
 
