@@ -12,6 +12,11 @@ public class PlayerMovement : MonoBehaviour
     public bool canDash = true;
     public float dashStrength = 5f, dashDuration = 0.5f, dashCooldown = 2f;
 
+    [Header("Animation")]
+    [Tooltip("The directional velocity the player must pass to be considered moving in that direction.")]
+    [SerializeField] private float _movementThreshold = 0.1f;
+    public MovementState movementState;
+
     [Header("References")]
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private SpriteRenderer _sprite;
@@ -19,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     // NON-SERIALIZED
     public static PlayerMovement Instance;
+    public enum MovementState { Idle, Up, Down, Right, Left}
     private Vector2 _newRoomPos;
     private Vector2 _movementInput;
     private bool _dashRequested = false, _isDashing = false, _isMovingBetweenRooms = false;
@@ -53,7 +59,9 @@ public class PlayerMovement : MonoBehaviour
     {
         HandleTimers();
 
-        OrientSprite();
+        SetMovementState();
+
+        UpdateAnimator();
     }
     void FixedUpdate()
     {
@@ -165,40 +173,87 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
-    #region Helper Methods
-    private void OrientSprite()
+    #region Animations
+    private void SetMovementState()
+    {
+        Vector2 velocity = _rb.linearVelocity;
+
+        // Player is not moving (or barely moving)
+        if (Math.Abs(velocity.x) <= _movementThreshold && Math.Abs(velocity.y) <= _movementThreshold)
+            movementState = MovementState.Idle;
+
+        // Determine if player is moving more vertically or horizontally (defualt to horizontal)
+        // Horizontal
+        else if (Math.Abs(velocity.x) >= Math.Abs(velocity.y))
+        {
+            if (velocity.x > 0)
+                 movementState = MovementState.Right;
+            else
+                movementState = MovementState.Left;
+        }
+        // Vertical
+        else
+        {
+            if (velocity.y > 0)
+                movementState = MovementState.Up;
+            else
+                movementState = MovementState.Down;
+        }
+    }
+    private void UpdateAnimator()
     {
         // Animator Bools:
-        // isAlive
+        // isAlive (not set by movement state)
         // isMovingUp
         // isMovingDown
         // isMovingHorizontal
 
-        // Player is not moving (or barely moving)
-        if (Math.Abs(_rb.linearVelocityX) <= 0.1 && Math.Abs(_rb.linearVelocityY) <= 0.1)
-        {
-            // Set animator bools
-            _animator.SetBool("isMovingUp", false);
-            _animator.SetBool("isMovingDown", false);
-            _animator.SetBool("isMovingHorizontal", false);
-
-            // Unflip sprite if necessary
-            if (_sprite.flipX) 
-                _sprite.flipX = false;
-        }
-        // For now (with only idle and walking side animations) walk if not idle
-        else
+        // Horizontal
+        if (movementState == MovementState.Right || movementState == MovementState.Left)
         {
             // Set animator bools
             _animator.SetBool("isMovingUp", false);
             _animator.SetBool("isMovingDown", false);
             _animator.SetBool("isMovingHorizontal", true);
 
-            // Flip sprite if necessary (faces right by default)
-            if (_rb.linearVelocityX >= 0 && _sprite.flipX) 
-                _sprite.flipX = false;
-            else if (_rb.linearVelocityX < 0 && !_sprite.flipX)
-                _sprite.flipX = true;
+            // Flip sprite if moving left
+            _sprite.flipX = (movementState == MovementState.Left) ? true : false;
+        }
+
+        // Up
+        else if (movementState == MovementState.Up)
+        {
+            // Set animator bools
+            _animator.SetBool("isMovingUp", true);
+            _animator.SetBool("isMovingDown", false);
+            _animator.SetBool("isMovingHorizontal", false);
+
+            // Unflip sprite
+            _sprite.flipX = false;
+        }
+
+        // Down
+        else if (movementState == MovementState.Down)
+        {
+             // Set animator bools
+            _animator.SetBool("isMovingUp", false);
+            _animator.SetBool("isMovingDown", true);
+            _animator.SetBool("isMovingHorizontal", false);
+
+            // Unflip sprite
+            _sprite.flipX = false;
+        }
+
+        // Idle
+        else if (movementState == MovementState.Idle)
+        {
+            // Set animator bools
+            _animator.SetBool("isMovingUp", false);
+            _animator.SetBool("isMovingDown", false);
+            _animator.SetBool("isMovingHorizontal", false);
+
+            // Unflip sprite
+            _sprite.flipX = false;
         }
     }
     #endregion

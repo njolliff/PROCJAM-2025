@@ -600,7 +600,7 @@ GameObject:
   - component: {fileID: 781048601}
   - component: {fileID: 781048600}
   m_Layer: 3
-  m_Name: Light Player
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -626,6 +626,8 @@ MonoBehaviour:
   dashStrength: 10
   dashDuration: 0.25
   dashCooldown: 2
+  _movementThreshold: 0.1
+  movementState: 0
   _rb: {fileID: 781048603}
   _sprite: {fileID: 1212480549}
   _animator: {fileID: 1212480550}
@@ -922,7 +924,7 @@ SpriteRenderer:
   m_SortingLayerID: -1759341741
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -6668096172011424173, guid: 9eaef155e2cf8024e859f48f37f348ee, type: 3}
+  m_Sprite: {fileID: -1876445219, guid: 9eaef155e2cf8024e859f48f37f348ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

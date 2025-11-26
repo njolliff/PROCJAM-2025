@@ -1,22 +1,10 @@
 fileFormatVersion: 2
-guid: a2c3f4f0ae864db40a3805978ee7d685
+guid: 9eaef155e2cf8024e859f48f37f348ee
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1663740377174648194
-    second: player_light_walking_side_0
-  - first:
-      213: -18526397757947764
-    second: player_light_walking_side_1
-  - first:
-      213: 2833468019319285726
-    second: player_light_walking_side_2
-  - first:
-      213: -1082830307172871186
-    second: player_light_walking_side_3
-  - first:
-      213: -8484062409644553219
-    second: player_light_walking_side_4
+      213: -6668096172011424173
+    second: player_light_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -164,7 +152,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_light_walking_side_0
+      name: player_idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -177,16 +165,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: e7ad70c11f439e8e0800000000000000
-      internalID: -1663740377174648194
+      spriteID: 5381426f03b7a444a95cccbb2c0c8272
+      internalID: -1876445219
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_light_walking_side_1
+      name: player_idle_1
       rect:
         serializedVersion: 2
         x: 16
@@ -199,16 +187,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c808ba2e65e2ebff0800000000000000
-      internalID: -18526397757947764
+      spriteID: ae230dcbcb7b0054494af1d0f0e46598
+      internalID: 1286117036
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_light_walking_side_2
+      name: player_idle_2
       rect:
         serializedVersion: 2
         x: 32
@@ -221,54 +209,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ed7a4f5b620825720800000000000000
-      internalID: 2833468019319285726
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_light_walking_side_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ee31fec929309f0f0800000000000000
-      internalID: -1082830307172871186
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_light_walking_side_4
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dfb44ec503e824a80800000000000000
-      internalID: -8484062409644553219
+      spriteID: 701c73eb5cdacec49bd7f686cbbf64ac
+      internalID: -1688144047
       vertices: []
       indices: 
       edges: []
@@ -277,7 +221,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 0f03333a032003c4a9478c72f9657008
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -287,13 +231,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":true,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+      - key: SpriteEditor.SliceOnImport
+        value: True
     nameFileIdTable:
-      player_light_walking_side_0: -1663740377174648194
-      player_light_walking_side_1: -18526397757947764
-      player_light_walking_side_2: 2833468019319285726
-      player_light_walking_side_3: -1082830307172871186
-      player_light_walking_side_4: -8484062409644553219
+      player_idle_0: -1876445219
+      player_idle_1: 1286117036
+      player_idle_2: -1688144047
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
