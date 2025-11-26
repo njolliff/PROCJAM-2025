@@ -34,7 +34,7 @@ public class RoomContentSpawner : MonoBehaviour
         }
     }
 
-    private void SetTilemapLayout(RoomLayout roomLayout)
+    public void SetTilemapLayout(RoomLayout roomLayout)
     {
         // Clear tilemaps for safety
         contentTilemap.ClearAllTiles();

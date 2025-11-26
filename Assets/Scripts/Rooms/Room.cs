@@ -13,11 +13,11 @@ public class Room : MonoBehaviour
     public Door[] doors;
 
     public enum RoomType { Enemy, Treasure, Start, Boss };
-    private bool _contentSpawned = false;
+    private protected bool _contentSpawned = false;
     #endregion
 
     #region Player Enter/Exit Room
-    public void OnPlayerEnteredRoom()
+    public virtual void OnPlayerEnteredRoom()
     {
         playerInRoom = true;
         
