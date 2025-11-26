@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fac1b8b2223cb4cb778ab7bf293a71, type: 3}
+  m_Name: Enemy Room 0
+  m_EditorClassIdentifier: Assembly-CSharp::RoomLayout
+  tiles:
+  - position: {x: -4, y: 0}
+    tile: {fileID: 11400000, guid: b549554c9b5f49c46a878635126e877c, type: 2}
+    debugTile: {fileID: 11400000, guid: 2e1698f882b58294a926190416f51cb7, type: 2}
+  - position: {x: 4, y: 0}
+    tile: {fileID: 11400000, guid: b549554c9b5f49c46a878635126e877c, type: 2}
+    debugTile: {fileID: 11400000, guid: 2e1698f882b58294a926190416f51cb7, type: 2}
+  - position: {x: 0, y: 2}
+    tile: {fileID: 11400000, guid: b549554c9b5f49c46a878635126e877c, type: 2}
+    debugTile: {fileID: 11400000, guid: 2e1698f882b58294a926190416f51cb7, type: 2}
+  - position: {x: 0, y: -2}
+    tile: {fileID: 11400000, guid: b549554c9b5f49c46a878635126e877c, type: 2}
+    debugTile: {fileID: 11400000, guid: 2e1698f882b58294a926190416f51cb7, type: 2}
+  - position: {x: 4, y: 2}
+    tile: {fileID: 11400000, guid: 03d0b82792b140643b1ad91dd3c5234a, type: 2}
+    debugTile: {fileID: 11400000, guid: b680d9f6a0c44c84c8815621f6527eed, type: 2}
+  - position: {x: -4, y: 2}
+    tile: {fileID: 11400000, guid: 03d0b82792b140643b1ad91dd3c5234a, type: 2}
+    debugTile: {fileID: 11400000, guid: b680d9f6a0c44c84c8815621f6527eed, type: 2}
+  - position: {x: 4, y: -2}
+    tile: {fileID: 11400000, guid: 03d0b82792b140643b1ad91dd3c5234a, type: 2}
+    debugTile: {fileID: 11400000, guid: b680d9f6a0c44c84c8815621f6527eed, type: 2}
+  - position: {x: -4, y: -2}
+    tile: {fileID: 11400000, guid: 03d0b82792b140643b1ad91dd3c5234a, type: 2}
+    debugTile: {fileID: 11400000, guid: b680d9f6a0c44c84c8815621f6527eed, type: 2}

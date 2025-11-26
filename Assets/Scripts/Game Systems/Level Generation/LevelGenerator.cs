@@ -8,7 +8,7 @@ public class LevelGenerator : MonoBehaviour
 
     [Header("Spawning")]
     public int roomCount;
-    public float branchChance, extraDoorChance;
+    public float branchChance, extraDoorChance, treasureRoomChance;
     public Vector2 roomSpacing;
 
     private List<RoomNode> _roomGraph;
@@ -16,6 +16,6 @@ public class LevelGenerator : MonoBehaviour
     private void GenerateLevel()
     {
         // Build a graph of RoomNodes
-        _roomGraph = RoomGraphGenerator.GenerateGraph(roomCount, branchChance, extraDoorChance);
+        _roomGraph = RoomGraphGenerator.GenerateGraph(roomCount, branchChance, extraDoorChance, treasureRoomChance);
     }
 }

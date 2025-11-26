@@ -10,7 +10,7 @@ public static class RoomGraphGenerator
     /// <param name="branchChance">(0-1) Chance to branch instead of continuing walk.</param>
     /// <param name="extraDoorChance">Chance to create extra connections between rooms after Prim's.</param>
     /// <returns></returns>
-    public static List<RoomNode> GenerateGraph(int roomCount, float branchChance, float extraConnectionChance)
+    public static List<RoomNode> GenerateGraph(int roomCount, float branchChance, float extraConnectionChance, float treasureRoomChance)
     {
         // Get a graph of randomly placed rooms
         List<RoomNode> roomGraph = BuildBaseGraph(roomCount, branchChance);
@@ -20,6 +20,9 @@ public static class RoomGraphGenerator
 
         // Add extra connections
         AddExtraConnections(roomGraph, extraConnectionChance);
+
+        // Assign room types
+        AssignRoomTypes(roomGraph, treasureRoomChance);
 
         // Return finalized graph
         return roomGraph;
@@ -42,7 +45,7 @@ public static class RoomGraphGenerator
 
         // Create the starting RoomNode
         Vector2Int startPos = Vector2Int.zero;
-        RoomNode startRoom = new RoomNode { gridPosition = startPos };
+        RoomNode startRoom = new RoomNode { gridPosition = startPos , roomType = Room.RoomType.Start };
         placed[startPos] = startRoom;
         freeRooms.Add(startRoom);
         allRooms.Add(startRoom);
@@ -139,6 +142,25 @@ public static class RoomGraphGenerator
             foreach (RoomNode pn in potentialNeighborsCopy)
                 if (Random.value < extraConnectionChance)
                     CreateConnection(room, pn);
+        }
+    }
+
+    private static void AssignRoomTypes(List<RoomNode> roomGraph, float treasureRoomChance)
+    {
+        foreach (var room in roomGraph)
+        {
+            // First room in the graph is the starting room, and was set to Start when created
+            if (room == roomGraph[0]) continue;
+
+            // Set the last generated room as the boss room
+            if (room == roomGraph[roomGraph.Count - 1])
+                room.roomType = Room.RoomType.Boss;
+
+            // For every other room, roll for a chance to be a treasure room
+            else if (Random.value < treasureRoomChance)
+                room.roomType = Room.RoomType.Treasure;
+            else
+                room.roomType = Room.RoomType.Enemy;
         }
     }
 

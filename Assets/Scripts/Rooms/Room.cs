@@ -4,22 +4,34 @@ public class Room : MonoBehaviour
 {
     #region Variables
     [Header("Room Values")]
-    public bool isActiveRoom = false;
+    public RoomType roomType;
+    public bool playerInRoom = false;
 
     [Header("References")]
-    public Door[] doors;
+    public RoomContentSpawner contentSpawner;
     public RoomShroud shroud;
+    public Door[] doors;
+
+    public enum RoomType { Enemy, Treasure, Start, Boss };
+    private bool _contentSpawned = false;
     #endregion
 
     #region Player Enter/Exit Room
     public void OnPlayerEnteredRoom()
     {
-        isActiveRoom = true;
+        playerInRoom = true;
+        
+        if (!_contentSpawned)
+        {
+            contentSpawner.SpawnRoomContent(roomType);
+            _contentSpawned = true;
+        }
+
         shroud.FadeFromBlack();
     }
     public void OnPlayerExitedRoom()
     {
-        isActiveRoom = false;
+        playerInRoom = false;
         shroud.FadeToBlack();
     }
     #endregion

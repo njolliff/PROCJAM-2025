@@ -7,16 +7,16 @@ public class RoomGraphRuntimeDebugger : MonoBehaviour
 
     [Header("Generation")]
     public int numRooms;
-    public float branchChance, extraConnectionChance;
+    public float branchChance, extraConnectionChance, treasureRoomChance;
 
     [Header("Debug")]
     public float gizmoSize = 0.25f;
-    public Color roomColor = Color.green;
-    public Color connectionColor = Color.yellow;
+    public Color startRoomColor = Color.green, enemyRoomColor = Color.orange, treasureRoomColor = Color.yellow, bossRoomColor = Color.red;
+    public Color connectionColor = Color.blue;
 
     void Awake()
     {
-        rooms = RoomGraphGenerator.GenerateGraph(numRooms, branchChance, extraConnectionChance);
+        rooms = RoomGraphGenerator.GenerateGraph(numRooms, branchChance, extraConnectionChance, treasureRoomChance);
     }
 
     void Update()
@@ -36,9 +36,18 @@ public class RoomGraphRuntimeDebugger : MonoBehaviour
 
             // Draw "room" as a small cross on top with slight Z offset
             Vector3 crossPos = roomPos + new Vector3(0f, 0f, -1f); // slightly in front
+            Color roomColor = GetRoomColor(room);
             Debug.DrawLine(crossPos + Vector3.up * gizmoSize, crossPos - Vector3.up * gizmoSize, roomColor);
             Debug.DrawLine(crossPos + Vector3.right * gizmoSize, crossPos - Vector3.right * gizmoSize, roomColor);
         }
+    }
+
+    private Color GetRoomColor(RoomNode room)
+    {
+        if (room.roomType == Room.RoomType.Enemy) return enemyRoomColor;
+        else if (room.roomType == Room.RoomType.Treasure) return treasureRoomColor;
+        else if (room.roomType == Room.RoomType.Start) return startRoomColor;
+        else return bossRoomColor;
     }
 
 }

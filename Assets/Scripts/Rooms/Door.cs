@@ -47,7 +47,7 @@ public class Door : MonoBehaviour
     /// </summary>
     private void LockAnimationFinished()
     {
-        _collider.isTrigger = false;
+        _collider.enabled = true;
         onLockAnimationFinished?.Invoke();
     }
     /// <summary>
@@ -55,7 +55,7 @@ public class Door : MonoBehaviour
     /// </summary>
     private void UnlockAnimationFinished()
     {
-        _collider.isTrigger = true;
+        _collider.enabled = false;
     }
     #endregion
 
@@ -64,7 +64,7 @@ public class Door : MonoBehaviour
         if (collision.gameObject.CompareTag("Player Physics"))
         {
             // Player leaving room
-            if (_room.isActiveRoom)
+            if (_room.playerInRoom)
             {
                 // Get player movement script off of player parent game object
                 Transform parentTransform = collision.transform;
