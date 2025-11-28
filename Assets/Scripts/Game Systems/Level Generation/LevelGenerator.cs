@@ -16,7 +16,7 @@ public class LevelGenerator : MonoBehaviour
     private List<RoomNode> _roomGraph;
     private Room _startingRoom;
 
-    void Awake()
+    void Start()
     {
         GenerateLevel();
     }

@@ -19,7 +19,7 @@ public class Door : MonoBehaviour
     {
         // Calculate the position to send player to in the next room
         if (_direction == Direction.North)
-            _nextRoomPos = _entryPosition.position + (Vector3.up * 6.5f);
+            _nextRoomPos = _entryPosition.position + (Vector3.up * 6.75f); // Move the player slightly further up to account for perspective + footbox
         if (_direction == Direction.East)
             _nextRoomPos = _entryPosition.position + (Vector3.right * 6.5f);
         if (_direction == Direction.South)

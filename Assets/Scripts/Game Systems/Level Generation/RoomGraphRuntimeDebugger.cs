@@ -8,19 +8,38 @@ public class RoomGraphRuntimeDebugger : MonoBehaviour
     [Header("Generation")]
     public int numRooms;
     public float branchChance, extraConnectionChance, treasureRoomChance;
+    public float timeUntilNewRoom;
 
     [Header("Debug")]
     public float gizmoSize = 0.25f;
     public Color startRoomColor = Color.green, enemyRoomColor = Color.orange, treasureRoomColor = Color.yellow, bossRoomColor = Color.red;
     public Color connectionColor = Color.blue;
 
-    void Awake()
+    private float _newRoomTimer = 0;
+    private bool _needsNewRoom = false;
+
+    void Start()
     {
         rooms = RoomGraphGenerator.GenerateGraph(numRooms, branchChance, extraConnectionChance, treasureRoomChance);
     }
 
     void Update()
     {
+        if (!_needsNewRoom)
+        {
+            _newRoomTimer += Time.deltaTime;
+            if (_newRoomTimer >= timeUntilNewRoom)
+            {
+                _needsNewRoom = true;
+                _newRoomTimer = 0;
+            }
+        }
+
+        if (_needsNewRoom) 
+        {
+            rooms = RoomGraphGenerator.GenerateGraph(numRooms, branchChance, extraConnectionChance, treasureRoomChance);
+            _needsNewRoom = false;
+        }
         if (rooms == null) return;
 
         foreach (var room in rooms)
@@ -49,5 +68,4 @@ public class RoomGraphRuntimeDebugger : MonoBehaviour
         else if (room.roomType == Room.RoomType.Start) return startRoomColor;
         else return bossRoomColor;
     }
-
 }

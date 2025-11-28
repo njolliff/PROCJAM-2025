@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Player Physics
   - Player Hurt
+  - Enemy
+  - Player Projectile
   layers:
   - Default
   - TransparentFX
@@ -13,7 +15,7 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
+  - Player Projectile
   - 
   - 
   - 
@@ -54,6 +56,9 @@ TagManager:
     locked: 0
   - name: High Environment
     uniqueID: 484664063
+    locked: 0
+  - name: Projectiles
+    uniqueID: 3929887605
     locked: 0
   - name: Room Shroud
     uniqueID: 3822176285

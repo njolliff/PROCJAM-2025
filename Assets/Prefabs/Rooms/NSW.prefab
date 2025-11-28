@@ -2028,7 +2028,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826703352568887719}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2770,7 +2770,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1279829112085545109}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2921,8 +2921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af822deadc2082740bdb5544fc7bdabd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _room: {fileID: 1212005019886072810}
-  _sprite: {fileID: 9027875893290507622}
+  _transitionDuration: 1
   _fadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -2956,7 +2955,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _transitionDuration: 1
+  _shroudSprite: {fileID: 9027875893290507622}
+  _room: {fileID: 1212005019886072810}
 --- !u!1 &2810498528358162917
 GameObject:
   m_ObjectHideFlags: 0
@@ -3182,7 +3182,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4983491656235743850}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -3396,7 +3396,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5016018768184038994}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -3487,7 +3487,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5090517755989974423}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -3852,7 +3852,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   roomType: 0
   playerInRoom: 0
-  playerMovement: {fileID: 0}
   contentSpawner: {fileID: 8977939088787612600}
   shroud: {fileID: 7246891315076608482}
   doors:
@@ -5433,7 +5432,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7961990013584020243}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -5555,7 +5554,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8209394927779537420}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

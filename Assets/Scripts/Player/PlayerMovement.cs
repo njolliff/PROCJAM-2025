@@ -18,15 +18,15 @@ public class PlayerMovement : MonoBehaviour
     public MovementState movementState;
 
     [Header("References")]
-    [SerializeField] private Rigidbody2D _rb;
+    public Rigidbody2D rb;
     [SerializeField] private SpriteRenderer _sprite;
     [SerializeField] private Animator _animator;
 
     // NON-SERIALIZED
     public static PlayerMovement Instance;
     public enum MovementState { Idle, Up, Down, Right, Left}
+    [NonSerialized] public Vector2 movementInput;
     private Vector2 _newRoomPos;
-    private Vector2 _movementInput;
     private bool _dashRequested = false, _isDashing = false, _isMovingBetweenRooms = false;
     private float _dashDurationTimer = 0f, _dashCooldownTimer = 0f;
     #endregion
@@ -34,41 +34,53 @@ public class PlayerMovement : MonoBehaviour
     #region Initialization / Destruction
     void Awake()
     {
+        // Singleton
         if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
             Destroy(gameObject);
     }
     void OnEnable()
     {
+        // Subscribe to events
         Door.onLockAnimationFinished += () => canMove = true;
     }
     void OnDisable()
     {
+        // Unsubscribe from events
         Door.onLockAnimationFinished -= () => canMove = true;
     }
     void OnDestroy()
     {
+        // Singleton
         if (Instance == this)
             Instance = null;
     }
     #endregion
 
     #region Update
+    // Non Physics-based Logic
     void Update()
     {
+        // Dash duration / cooldown
         HandleTimers();
 
+        // Animator
         SetMovementState();
-
         UpdateAnimator();
     }
+
+    // Physics-based logic
     void FixedUpdate()
     {
+        // Player movement
         if (canMove)
         {
             // Dash if player requested and there is movement input
-            if (_dashRequested && _movementInput != Vector2.zero)
+            if (_dashRequested && movementInput != Vector2.zero)
             {
                 _dashRequested = false;
                 Dash();
@@ -78,19 +90,21 @@ public class PlayerMovement : MonoBehaviour
             else
                 MovePlayer();
         }
+
+        // Moving player between rooms
         else if (_isMovingBetweenRooms)
         {
             // Update player velocity in the direction of the new room
-            if (Vector2.Distance(_rb.position, _newRoomPos) > 0.05)
+            if (Vector2.Distance(rb.position, _newRoomPos) > 0.05)
             {
-                Vector2 updatedVelocity = moveBetweenRoomSpeed * (_newRoomPos - _rb.position).normalized;
-                _rb.linearVelocity = updatedVelocity;
+                Vector2 updatedVelocity = moveBetweenRoomSpeed * (_newRoomPos - rb.position).normalized;
+                rb.linearVelocity = updatedVelocity;
             }
 
             // Halt velocity when target position reached
             else
             {
-                _rb.linearVelocity = Vector2.zero;
+                rb.linearVelocity = Vector2.zero;
                 _isMovingBetweenRooms = false;
             }
         }
@@ -101,16 +115,17 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         // Calculate target velocity
-        Vector2 targetVelocity = _movementInput * maxVelocity;
+        Vector2 targetVelocity = movementInput * maxVelocity;
 
         // Calculate updated velocity
-        Vector2 updatedVelocity = Vector2.MoveTowards(_rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
+        Vector2 updatedVelocity = Vector2.MoveTowards(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
 
         // Apply updated velocity
-        _rb.linearVelocity = updatedVelocity;
+        rb.linearVelocity = updatedVelocity;
     }
     public void MovePlayerTo(Vector2 pos)
     {
+        // Set new room position and start moving player
         _newRoomPos = pos;
         _isMovingBetweenRooms = true;
     }
@@ -124,10 +139,10 @@ public class PlayerMovement : MonoBehaviour
         _isDashing = true;
 
         // Halt velocity so dash strength is the same in every direction every time
-        _rb.linearVelocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
 
         // Apply force
-        _rb.AddForce(_movementInput * dashStrength, ForceMode2D.Impulse);
+        rb.AddForce(movementInput * dashStrength, ForceMode2D.Impulse);
     }
     #endregion
 
@@ -176,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
     #region Animations
     private void SetMovementState()
     {
-        Vector2 velocity = _rb.linearVelocity;
+        Vector2 velocity = rb.linearVelocity;
 
         // Player is not moving (or barely moving)
         if (Math.Abs(velocity.x) <= _movementThreshold && Math.Abs(velocity.y) <= _movementThreshold)
@@ -262,7 +277,7 @@ public class PlayerMovement : MonoBehaviour
     public void OnMove(InputValue value)
     {
         // Get & set movement input
-        _movementInput = value.Get<Vector2>();
+        movementInput = value.Get<Vector2>().normalized;
     }
     public void OnDash()
     {

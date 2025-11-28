@@ -43,7 +43,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 271532363854821139}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -586,7 +586,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 827874155870477088}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2753,7 +2753,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3894220934850291677}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -4575,7 +4575,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4022302803963012833}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -4701,7 +4701,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4197903753504859562}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -4883,8 +4883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af822deadc2082740bdb5544fc7bdabd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _room: {fileID: 1396278823496547938}
-  _sprite: {fileID: 4260295755314750227}
+  _transitionDuration: 1
   _fadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -4918,7 +4917,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _transitionDuration: 1
+  _shroudSprite: {fileID: 4260295755314750227}
+  _room: {fileID: 1396278823496547938}
 --- !u!1 &4884996608081737369
 GameObject:
   m_ObjectHideFlags: 0
@@ -5083,7 +5083,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   roomType: 0
   playerInRoom: 0
-  playerMovement: {fileID: 0}
   contentSpawner: {fileID: 2612351257922062819}
   shroud: {fileID: 7998182031776407216}
   doors:
