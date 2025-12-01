@@ -5,7 +5,6 @@ using UnityEngine;
 public class MeleeAttack : MonoBehaviour
 {
     [Header("Swing Settings")]
-    public float attackDuration = 0.3f;
     public int steps = 10; // How many positions along the arc
     public float radius = 1f; // Distance from player pivot
     public float arcAngle = 90f; // Total sweep of the arc in degrees
@@ -16,13 +15,13 @@ public class MeleeAttack : MonoBehaviour
     [ReadOnly] public bool isAttacking = false;
     private HashSet<Collider2D> _alreadyHit = new HashSet<Collider2D>();
 
-    public void PerformAttack(float attackDMG, float attackKB, Vector2 attackDir)
+    public void PerformAttack(float attackDMG, float attackKB, Vector2 attackDir, float attackDuration)
     {
         if (!isAttacking)
-            StartCoroutine(AttackCoroutine(attackDMG, attackKB, attackDir));
+            StartCoroutine(AttackCoroutine(attackDMG, attackKB, attackDir, attackDuration));
     }
 
-    private IEnumerator AttackCoroutine(float attackDMG, float attackKB, Vector2 attackDir)
+    private IEnumerator AttackCoroutine(float attackDMG, float attackKB, Vector2 attackDir, float attackDuration)
     {
         isAttacking = true;
         _alreadyHit.Clear();
@@ -38,7 +37,7 @@ public class MeleeAttack : MonoBehaviour
         float endAngle = baseAngle - arcAngle / 2f;
 
         // Trigger animation
-        _attackSprite.Swing(attackDir);
+        _attackSprite.Swing(attackDir, attackDuration);
 
         // Swing loop
         for (int i = 0; i <= steps; i++)
@@ -109,7 +108,12 @@ public class MeleeAttack : MonoBehaviour
     {
         if (hit.CompareTag("Enemy"))
         {
-            Debug.Log($"Enemy {hit.name} hit by melee attack, attacking with {attackDMG} damage and {attackKB} knockback.");
+            Enemy enemy = hit.GetComponentInParent<Enemy>();
+            if (enemy != null)
+            {
+                Vector2 knockbackDir = (enemy.transform.position - transform.position).normalized; // Melee attack knocks enemies straight back from the player
+                enemy.TakeHit(incomingAttack: attackDMG, incomingKB: attackKB, knockbackDir: knockbackDir);
+            }
         }
     }
 }

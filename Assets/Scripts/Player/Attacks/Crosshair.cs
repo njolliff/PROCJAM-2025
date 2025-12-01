@@ -10,21 +10,13 @@ public class Crosshair : MonoBehaviour
 
     void Update()
     {
-        // Only show crosshair when using a controller
-        if (playerInput.currentControlScheme == "Gamepad")
+        // Only show crosshair when using a controller, aiming, and able to move
+        if (playerInput.currentControlScheme == "Gamepad" && PlayerCombat.Instance.aimDirection != Vector2.zero && PlayerMovement.Instance.canMove)
         {
             Vector2 crosshairOffset = PlayerCombat.Instance.aimDirection * radius;
+            transform.localPosition = crosshairOffset;
 
-            // Disable the crosshair if the player is not aiming
-            if (crosshairOffset == Vector2.zero)
-                sprite.enabled = false;
-
-            // Otherwise, enable the sprite and move it to the aimed position
-            else
-            {
-                sprite.enabled = true;
-                transform.position = (Vector2)playerTransform.position + crosshairOffset;
-            }
+            sprite.enabled = true;
         }
         else
             sprite.enabled = false;

@@ -12,23 +12,16 @@ public class PlayerMovement : MonoBehaviour
     public bool canDash = true;
     public float dashStrength = 5f, dashDuration = 0.5f, dashCooldown = 2f;
 
-    [Header("Animation")]
-    [Tooltip("The directional velocity the player must pass to be considered moving in that direction.")]
-    [SerializeField] private float _movementThreshold = 0.1f;
-    public MovementState movementState;
-
     [Header("References")]
     public Rigidbody2D rb;
-    [SerializeField] private SpriteRenderer _sprite;
-    [SerializeField] private Animator _animator;
 
     // NON-SERIALIZED
     public static PlayerMovement Instance;
-    public enum MovementState { Idle, Up, Down, Right, Left}
     [NonSerialized] public Vector2 movementInput;
     private Vector2 _newRoomPos;
-    private bool _dashRequested = false, _isDashing = false, _isMovingBetweenRooms = false;
-    private float _dashDurationTimer = 0f, _dashCooldownTimer = 0f;
+    private bool _dashRequested = false, _isDashing = false, _isMovingBetweenRooms = false, _isHitstunned = false; // Movement states
+    private float _dashDurationTimer = 0f, _dashCooldownTimer = 0f, _hitstunTimer = 0f; // Timers
+    private float _hitstunDuration;
     #endregion
 
     #region Initialization / Destruction
@@ -65,12 +58,8 @@ public class PlayerMovement : MonoBehaviour
     // Non Physics-based Logic
     void Update()
     {
-        // Dash duration / cooldown
+        // Dash duration / CD / Hitstun
         HandleTimers();
-
-        // Animator
-        SetMovementState();
-        UpdateAnimator();
     }
 
     // Physics-based logic
@@ -111,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
-    #region Movement Methods
+    #region Movement
     private void MovePlayer()
     {
         // Calculate target velocity
@@ -122,12 +111,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Apply updated velocity
         rb.linearVelocity = updatedVelocity;
-    }
-    public void MovePlayerTo(Vector2 pos)
-    {
-        // Set new room position and start moving player
-        _newRoomPos = pos;
-        _isMovingBetweenRooms = true;
     }
     private void Dash()
     {
@@ -144,16 +127,56 @@ public class PlayerMovement : MonoBehaviour
         // Apply force
         rb.AddForce(movementInput * dashStrength, ForceMode2D.Impulse);
     }
+    public void MovePlayerTo(Vector2 pos)
+    {
+        // Set new room position and start moving player
+        _newRoomPos = pos;
+        _isMovingBetweenRooms = true;
+    }
+    public void TakeKnockback(float knockbackStrength, Vector2 knockbackDir)
+    {
+        // Halt velocity so force is always the same, then apply force
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(knockbackDir * knockbackStrength, ForceMode2D.Impulse);
+    }
+    public void TakeHitstun(float hitstunDuration)
+    {
+        // Reset hitstun timer with new duration
+        _hitstunTimer = 0f;
+        _hitstunDuration = hitstunDuration;
+
+        // Disable movement and enable timer
+        canMove = false;
+        _isHitstunned = true;
+    }
     #endregion
 
-    #region Timer Methods
+    #region Timers
     private void HandleTimers()
     {
+        // Hitstun
+        HandleHitstunTimer();
+
         // Dash duration
         HandleDashDurationTimer();
 
         // Dash cooldown
         HandleDashCooldownTimer();
+    }
+    private void HandleHitstunTimer()
+    {
+        if (_isHitstunned)
+        {
+            _hitstunTimer += Time.deltaTime;
+            if (_hitstunTimer >= _hitstunDuration)
+            {
+                canMove = true;
+
+                _hitstunTimer = 0f;
+                _hitstunDuration = 0f;
+                _isHitstunned = false;
+            }
+        }
     }
     private void HandleDashDurationTimer()
     {
@@ -188,92 +211,7 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
-    #region Animations
-    private void SetMovementState()
-    {
-        Vector2 velocity = rb.linearVelocity;
-
-        // Player is not moving (or barely moving)
-        if (Math.Abs(velocity.x) <= _movementThreshold && Math.Abs(velocity.y) <= _movementThreshold)
-            movementState = MovementState.Idle;
-
-        // Determine if player is moving more vertically or horizontally (defualt to horizontal)
-        // Horizontal
-        else if (Math.Abs(velocity.x) >= Math.Abs(velocity.y))
-        {
-            if (velocity.x > 0)
-                 movementState = MovementState.Right;
-            else
-                movementState = MovementState.Left;
-        }
-        // Vertical
-        else
-        {
-            if (velocity.y > 0)
-                movementState = MovementState.Up;
-            else
-                movementState = MovementState.Down;
-        }
-    }
-    private void UpdateAnimator()
-    {
-        // Animator Bools:
-        // isAlive (not set by movement state)
-        // isMovingUp
-        // isMovingDown
-        // isMovingHorizontal
-
-        // Horizontal
-        if (movementState == MovementState.Right || movementState == MovementState.Left)
-        {
-            // Set animator bools
-            _animator.SetBool("isMovingUp", false);
-            _animator.SetBool("isMovingDown", false);
-            _animator.SetBool("isMovingHorizontal", true);
-
-            // Flip sprite if moving left
-            _sprite.flipX = (movementState == MovementState.Left) ? true : false;
-        }
-
-        // Up
-        else if (movementState == MovementState.Up)
-        {
-            // Set animator bools
-            _animator.SetBool("isMovingUp", true);
-            _animator.SetBool("isMovingDown", false);
-            _animator.SetBool("isMovingHorizontal", false);
-
-            // Unflip sprite
-            _sprite.flipX = false;
-        }
-
-        // Down
-        else if (movementState == MovementState.Down)
-        {
-             // Set animator bools
-            _animator.SetBool("isMovingUp", false);
-            _animator.SetBool("isMovingDown", true);
-            _animator.SetBool("isMovingHorizontal", false);
-
-            // Unflip sprite
-            _sprite.flipX = false;
-        }
-
-        // Idle
-        else if (movementState == MovementState.Idle)
-        {
-            // Set animator bools
-            _animator.SetBool("isMovingUp", false);
-            _animator.SetBool("isMovingDown", false);
-            _animator.SetBool("isMovingHorizontal", false);
-
-            // Unflip sprite
-            _sprite.flipX = false;
-        }
-    }
-    #endregion
-
-    #region Input Methods
+    #region Input
     public void OnMove(InputValue value)
     {
         // Get & set movement input

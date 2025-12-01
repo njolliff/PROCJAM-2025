@@ -144,7 +144,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303896387}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b770a400134496648a11ad0e15e8a36f, type: 3}
   m_Name: 
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303896387}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f992099ae346c34b8ccde7db6441438, type: 3}
   m_Name: 
@@ -247,6 +247,7 @@ MonoBehaviour:
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 4294967295
+  _attackSprite: {fileID: 0}
   isAttacking: 0
 --- !u!1 &397780696
 GameObject:
@@ -715,11 +716,7 @@ MonoBehaviour:
   dashStrength: 10
   dashDuration: 0.25
   dashCooldown: 2
-  _movementThreshold: 0.1
-  movementState: 0
   rb: {fileID: 781048603}
-  _sprite: {fileID: 1212480549}
-  _animator: {fileID: 1212480550}
 --- !u!114 &781048601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -809,19 +806,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   maxHP: 10
-  maxPossibleHP: 20
   startingDefense: 0
+  startingKBResistance: 0
   startingMeleeDMG: 1
   startingRangedDMG: 1
   startingMeleeKB: 1
   startingRangedKB: 0.25
+  startingRangedAttackCooldown: 0.25
+  startingProjectileSpeed: 1
   isAlive: 1
   hp: 0
   defense: 0
-  meleeAttackDMG: 0
-  rangedAttackDMG: 0
-  meleeAttackKB: 0
-  rangedAttackKB: 0
+  kbResistance: 0
+  meleeAttack: 0
+  rangedAttack: 0
+  meleeKnockback: 0
+  rangedKnockback: 0
+  rangedAttackCooldown: 0
+  projectileSpeed: 0
   _meleeAttack: {fileID: 370795919}
   _rangedAttack: {fileID: 1582635472}
   _playerInput: {fileID: 781048601}
@@ -1118,7 +1120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4eba0603fcc70543ad9346222b749e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedAttack
+  projectilePrefab: {fileID: 0}
   isAttacking: 0
+  attackCooldown: 0
 --- !u!4 &1582635473
 Transform:
   m_ObjectHideFlags: 0

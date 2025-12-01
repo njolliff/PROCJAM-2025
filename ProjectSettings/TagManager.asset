@@ -6,21 +6,21 @@ TagManager:
   tags:
   - Player Physics
   - Player Hurt
-  - Enemy
   - Player Projectile
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
   - Player Projectile
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player Physics
+  - Player Hurt
+  - Enemy Physics
+  - Enemy Hurt
+  - Drop
   - 
   - 
   - 

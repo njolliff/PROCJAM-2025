@@ -3,9 +3,9 @@ using UnityEngine.Tilemaps;
 
 public class RoomContentSpawner : MonoBehaviour
 {
-    [Header("Tilemaps")]
+    [Header("References")]
+    public Room room;
     public Tilemap contentTilemap;
-    public Tilemap debugTilemap;
 
     [Header("Room Layouts")]
     public RoomLayoutContainer enemyRooms;
@@ -14,37 +14,44 @@ public class RoomContentSpawner : MonoBehaviour
     
     public void SpawnRoomContent(Room.RoomType type)
     {
-        if (type == Room.RoomType.Enemy)
+        RoomLayout chosenLayout = GetRoomLayout(type);
+        if (chosenLayout != null)
+            SetTilemapLayout(chosenLayout);
+    }
+
+    private RoomLayout GetRoomLayout(Room.RoomType type)
+    {
+        return type switch
         {
-            RoomLayout chosenLayout = enemyRooms.GetRandomLayout();
-            if (chosenLayout != null)
-                SetTilemapLayout(chosenLayout);
-        }
-        else if (type == Room.RoomType.Treasure)
-        {
-            RoomLayout chosenLayout = treasureRooms.GetRandomLayout();
-            if (chosenLayout != null)
-                SetTilemapLayout(chosenLayout);
-        }
-        else if (type == Room.RoomType.Boss)
-        {
-            RoomLayout chosenLayout = bossRooms.GetRandomLayout();
-            if (chosenLayout != null)
-                SetTilemapLayout(chosenLayout);
-        }
+            Room.RoomType.Enemy => enemyRooms.GetRandomLayout(),
+            Room.RoomType.Treasure => treasureRooms.GetRandomLayout(),
+            Room.RoomType.Boss => bossRooms.GetRandomLayout(),
+            _ => null,
+        };
     }
 
     public void SetTilemapLayout(RoomLayout roomLayout)
     {
-        // Clear tilemaps for safety
+        // Clear tilemap for safety
         contentTilemap.ClearAllTiles();
-        debugTilemap.ClearAllTiles();
 
         // Place each tile in the room layout
         foreach (var tile in roomLayout.tiles)
         {
+            // Place tile
             contentTilemap.SetTile((Vector3Int)tile.position, tile.tile);
-            debugTilemap.SetTile((Vector3Int)tile.position, tile.debugTile);
+
+            // If tile spawned an enemy, set that enemy's room and add it to the room's enemy set
+            GameObject obj = contentTilemap.GetInstantiatedObject((Vector3Int)tile.position);
+            if (obj != null && obj.CompareTag("Enemy"))
+            {
+                Enemy enemy = obj.GetComponent<Enemy>();
+                if (enemy != null)
+                {
+                    enemy.room = room;
+                    room.EnemySpawned(enemy);
+                }
+            }
         }
     }
 }

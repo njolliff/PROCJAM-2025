@@ -7,17 +7,16 @@ public class PlayerCombat : MonoBehaviour
     #region Variables
     [Header("Default Values")]
     public float maxHP = 10;
-    public float maxPossibleHP = 20;
-    public float startingDefense = 0;
-    public float startingMeleeDMG = 1, startingRangedDMG = 1;
-    public float startingMeleeKB = 1, startingRangedKB = 0.25f;
+    public float startingDefense = 0, startingKBResistance = 0;
+    public float startingMeleeDMG = 1, startingMeleeKB = 1, startingMeleeSpeed = 0.5f;
+    public float startingRangedDMG = 1, startingRangedKB = 0.25f;
     public float startingRangedAttackCooldown = 0.25f, startingProjectileSpeed = 1f;
     
     [Header("Live Values")]
     [ReadOnly] public bool isAlive = true;
-    [ReadOnly] public float hp, defense;
-    [ReadOnly] public float meleeAttackDMG, rangedAttackDMG;
-    [ReadOnly] public float meleeAttackKB, rangedAttackKB;
+    [ReadOnly] public float hp, defense, kbResistance;
+    [ReadOnly] public float meleeAttack, meleeKnockback, meleeSpeed;
+    [ReadOnly] public float rangedAttack, rangedKnockback;
     [ReadOnly] public float rangedAttackCooldown, projectileSpeed;
 
     [Header("References")]
@@ -46,12 +45,13 @@ public class PlayerCombat : MonoBehaviour
         defense = startingDefense;
 
         // MELEE
-        meleeAttackDMG = startingMeleeDMG;
-        meleeAttackKB = startingMeleeKB;
+        meleeAttack = startingMeleeDMG;
+        meleeKnockback = startingMeleeKB;
+        meleeSpeed = startingMeleeSpeed;
 
         // RANGED
-        rangedAttackDMG = startingRangedDMG;
-        rangedAttackKB = startingRangedKB;
+        rangedAttack = startingRangedDMG;
+        rangedKnockback = startingRangedKB;
         rangedAttackCooldown = startingRangedAttackCooldown;
         projectileSpeed = startingProjectileSpeed;
     }
@@ -63,10 +63,12 @@ public class PlayerCombat : MonoBehaviour
     }
     #endregion
 
-    public void TakeDamage(float attack)
+    #region Hurting / Healing
+    public void TakeHit(float incomingAttack, float incomingKB, Vector2 knockbackDir, float hitstunDuration)
     {
-        // Calculate damage
-        float damage = defense - attack;
+        // Calculate damage, taking at least half a heart
+        float damage = incomingAttack - defense;
+        if (damage < 0.5) damage = 0.5f;
         
         // Check for player death
         if (hp - damage <= 0)
@@ -77,13 +79,33 @@ public class PlayerCombat : MonoBehaviour
             PlayerController.Instance.KillPlayer();
         }
 
-        // if not dead, take damage normally
+        // if not dead, take damage, knockback, and hitstun normally
         else
         {
+            // Calculate knockback
+            float knockbackStrength = incomingKB - kbResistance;
+            if (knockbackStrength < 0) knockbackStrength = 0;
+
+            // Take damage
             hp -= damage;
             Debug.Log($"HP: {hp}");
+
+            PlayerMovement.Instance.TakeHitstun(hitstunDuration);
+        
+            // Take knockback
+            PlayerMovement.Instance.TakeKnockback(knockbackStrength, knockbackDir);
         }
     }
+    public void Heal(float healAmount)
+    {
+        if (hp + healAmount > maxHP) 
+            hp = maxHP;
+        else
+            hp += healAmount;
+            
+        Debug.Log($"Player healed for {healAmount}. HP: {hp}");
+    }
+    #endregion
 
     #region Input Methods
     public void OnAim(InputValue value)
@@ -92,26 +114,27 @@ public class PlayerCombat : MonoBehaviour
     }
     public void OnMeleeAttack()
     {
-        if (!_isAttacking)
+        if (!_isAttacking && PlayerMovement.Instance.canMove)
         {
             // Get attack direction
             Vector2 attackDir = DetermineAttackDirection();
 
             // If attack direction is (0,0) default to up
             // Should only occur when there is no controller input, the player clicked exactly on top of the player, or the player is on an unknown control scheme
-            if (attackDir == Vector2.zero) attackDir = Vector2.down;
+            if (attackDir == Vector2.zero) attackDir = Vector2.up;
 
             // Perform attack
             _meleeAttack.PerformAttack(
                 attackDir: attackDir,
-                attackDMG: meleeAttackDMG, 
-                attackKB: meleeAttackKB
+                attackDMG: meleeAttack, 
+                attackKB: meleeKnockback,
+                attackDuration: meleeSpeed
                 );
         }
     }
     public void OnRangedAttack()
     {
-        if (!_isAttacking) 
+        if (!_isAttacking && PlayerMovement.Instance.canMove) 
         {
             // Get attack direction
             Vector2 attackDir = DetermineAttackDirection();
@@ -123,8 +146,8 @@ public class PlayerCombat : MonoBehaviour
             // Perform attack
             _rangedAttack.PerformAttack(
                 dir: attackDir, 
-                dmg: rangedAttackDMG, 
-                kb: rangedAttackKB, 
+                dmg: rangedAttack, 
+                kb: rangedKnockback, 
                 projSpeed: projectileSpeed, 
                 cd: rangedAttackCooldown);
         }

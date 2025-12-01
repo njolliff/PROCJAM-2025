@@ -8,7 +8,7 @@ public class PlayerRandomEntryStart : MonoBehaviour
 {
     public List<Transform> entryPoints;
 
-    void Awake()
+    void Start()
     {
         transform.position = entryPoints[Random.Range(0, entryPoints.Count - 1)].position;
     }

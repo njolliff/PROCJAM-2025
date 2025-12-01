@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 056c5551ef2b84042ae4eb94eba74c97
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _rb: {instanceID: 0}
+  - _halfHeartPrefab: {fileID: 2364118122838966950, guid: 7ab0233109cee094fb55c6466aefa017, type: 3}
+  - _fullHeartPrefab: {fileID: 6121552278051821000, guid: f88dbf7fdb1a9084fb95218e7b11ac1d, type: 3}
+  - room: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

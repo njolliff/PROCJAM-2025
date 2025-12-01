@@ -4,7 +4,7 @@ public class PlayerProjectile : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D _rb;
     [ReadOnly] public float speed;
-    [ReadOnly] public float damage;
+    [ReadOnly] public float attack;
     [ReadOnly] public float knockback;
 
     private bool _launched = false;
@@ -18,13 +18,13 @@ public class PlayerProjectile : MonoBehaviour
         }
     }
 
-    public void Launch(Vector2 attackDir, float dmg, float kb, float projSpeed)
+    public void Launch(Vector2 attackDir, float atk, float kb, float projSpeed)
     {
         // Rotate projectile
         transform.up = attackDir;
 
         // Set projectile values
-        damage = dmg;
+        attack = atk;
         knockback = kb;
         speed = projSpeed;
 
@@ -32,11 +32,21 @@ public class PlayerProjectile : MonoBehaviour
         _launched = true;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void Hit(GameObject hit)
+    {
+        Enemy enemy = hit.GetComponentInParent<Enemy>();
+        if (enemy != null)
+        {
+            Vector2 knockbackDir = _rb.linearVelocity.normalized; // Ranged projectiles deal knockback in their direction of travel
+            enemy.TakeHit(incomingAttack: attack, incomingKB: knockback, knockbackDir: knockbackDir);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log($"Hit enemy {collision.gameObject.name} for {damage} damage with {knockback} knockback.");
+            Hit(collision.gameObject);
         }
 
         Destroy(gameObject);

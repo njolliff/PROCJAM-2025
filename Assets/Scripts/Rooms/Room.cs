@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -14,6 +15,7 @@ public class Room : MonoBehaviour
 
     public enum RoomType { Enemy, Treasure, Start, Boss };
     private protected bool _contentSpawned = false;
+    private HashSet<Enemy> _enemies = new();
     #endregion
 
     #region Player Enter/Exit Room
@@ -33,6 +35,30 @@ public class Room : MonoBehaviour
     {
         playerInRoom = false;
         shroud.FadeToBlack();
+    }
+    #endregion
+
+    #region Enemies
+    public void EnemySpawned(Enemy enemy)
+    {
+        // Add the enemy to the enemies set
+        _enemies.Add(enemy);
+    }
+    public void EnemyDied(Enemy enemy)
+    {
+        // Make sure enemy is in set
+        if (!_enemies.Contains(enemy)) return;
+
+        // Remove enemy from set
+        _enemies.Remove(enemy);
+
+        // Check if all enemies have been defeated
+        if (_enemies.Count == 0)
+            EnemiesDefeated();
+    }
+    private void EnemiesDefeated()
+    {
+        UnlockDoors();
     }
     #endregion
 

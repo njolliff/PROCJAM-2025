@@ -5,23 +5,14 @@ public class MeleeAttackSprite : MonoBehaviour
     public float radius;
     [SerializeField] private Animator _animator;
 
-    private Vector2 _offset = new();
-
-    public void Swing(Vector2 attackDirection)
+    public void Swing(Vector2 attackDirection, float attackDuration)
     {
-        // Rotate sprite
+        // Update position and rotation
+        transform.position = PlayerMovement.Instance.rb.position + (attackDirection * radius);
         transform.up = attackDirection;
 
-        // Update offset
-        _offset = attackDirection * radius;
-
-        // Trigger animation
+        // Update animation speed and trigger animation
+        _animator.speed = 1 / attackDuration;
         _animator.SetTrigger("Swing");
-    }
-
-    void Update()
-    {
-        // Move with player
-        transform.position = PlayerMovement.Instance.rb.position + _offset;
     }
 }

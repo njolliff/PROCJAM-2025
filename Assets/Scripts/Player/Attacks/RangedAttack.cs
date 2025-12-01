@@ -36,7 +36,7 @@ public class RangedAttack : MonoBehaviour
             if (projectile != null) 
                 projectile.Launch(
                     attackDir: dir, 
-                    dmg: dmg, 
+                    atk: dmg, 
                     kb: kb, 
                     projSpeed: projSpeed);
 
